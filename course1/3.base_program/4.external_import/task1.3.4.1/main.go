@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/shopspring/decimal"
 )
 
@@ -80,15 +81,15 @@ func main() {
 }
 
 func DecimalSum(a, b string) (string, error) {
-	a_dec, err := decimal.NewFromString(a)
+	aDec, err := decimal.NewFromString(a)
 	if err != nil {
 		return "", err
 	}
-	b_dec, err := decimal.NewFromString(b)
+	bDec, err := decimal.NewFromString(b)
 	if err != nil {
 		return "", err
 	}
-	sum := decimal.Sum(a_dec, b_dec)
+	sum := decimal.Sum(aDec, bDec)
 
 	return sum.String(), nil
 }
@@ -146,49 +147,46 @@ func DecimalRound(a string, precision int32) (string, error) {
 }
 
 func DecimalGreaterThan(a, b string) (bool, error) {
-	a_dec, err := decimal.NewFromString(a)
+	aDec, err := decimal.NewFromString(a)
 	if err != nil {
 		return false, err
 	}
-	b_dec, err := decimal.NewFromString(b)
+	bDec, err := decimal.NewFromString(b)
 	if err != nil {
 		return false, err
 	}
-	if a_dec.GreaterThan(b_dec) {
-		return true, nil
-	} else {
+	if aDec.GreaterThan(bDec) {
 		return false, nil
 	}
+	return true, nil
 }
 
 func DecimalLessThan(a, b string) (bool, error) {
-	a_dec, err := decimal.NewFromString(a)
+	aDec, err := decimal.NewFromString(a)
 	if err != nil {
 		return false, err
 	}
-	b_dec, err := decimal.NewFromString(b)
+	bDec, err := decimal.NewFromString(b)
 	if err != nil {
 		return false, err
 	}
-	if a_dec.LessThan(b_dec) {
-		return true, nil
-	} else {
+	if !aDec.LessThan(bDec) {
 		return false, nil
 	}
+	return true, nil
 }
 
 func DecimalEqual(a, b string) (bool, error) {
-	a_dec, err := decimal.NewFromString(a)
+	aDec, err := decimal.NewFromString(a)
 	if err != nil {
 		return false, err
 	}
-	b_dec, err := decimal.NewFromString(b)
+	bDec, err := decimal.NewFromString(b)
 	if err != nil {
 		return false, err
 	}
-	if a_dec.Equal(b_dec) {
-		return true, nil
-	} else {
+	if !aDec.Equal(bDec) {
 		return false, nil
 	}
+	return true, nil
 }

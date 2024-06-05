@@ -3,7 +3,6 @@ package main
 import "fmt"
 
 func main() {
-
 	var i int = 1
 	var f float64 = 1.35
 	var s string = "a"
@@ -17,7 +16,6 @@ func main() {
 	changeBool(&b)
 
 	fmt.Println(i, " ", f, " ", s, " ", b)
-
 }
 
 func changeInt(a *int) {

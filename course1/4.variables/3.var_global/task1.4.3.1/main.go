@@ -36,5 +36,4 @@ func main() {
 	fmt.Println(year)
 	fmt.Println(month)
 	fmt.Println(day)
-
 }

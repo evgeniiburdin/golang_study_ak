@@ -5,7 +5,7 @@ import "testing"
 func Test_filterSentence(t *testing.T) {
 	type args struct {
 		sentence string
-		filter   map[string]bool
+		filter   map[string]struct{}
 	}
 	tests := []struct {
 		name string
@@ -13,7 +13,7 @@ func Test_filterSentence(t *testing.T) {
 		want string
 	}{
 		{"case1", args{"Lorem ipsum dolor sit amet consectetur adipiscing elit ipsum",
-			map[string]bool{"ipsum": true, "elit": true}},
+			map[string]struct{}{"ipsum": struct{}{}, "elit": struct{}{}}},
 			"Lorem dolor sit amet consectetur adipiscing"},
 	}
 	for _, tt := range tests {

@@ -8,6 +8,10 @@ func mergeMaps(map1, map2 map[string]int) map[string]int {
 		result[k] = v
 	}
 	for k, v := range map2 {
+		if _, ok := result[k]; ok {
+			result[k] += v
+			continue
+		}
 		result[k] = v
 	}
 	return result

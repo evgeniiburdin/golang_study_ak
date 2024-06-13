@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-var Permissions = map[int]string{
+var permissions = map[int]string{
 	0: "-,-,-",
 	1: "-,-,Execute",
 	2: "-,Write,-",
@@ -19,7 +19,7 @@ func main() {
 
 func getFilePermissions(flag int) string {
 	return fmt.Sprintf("Owner:%s Group:%s Other:%s",
-		Permissions[flag/100],
-		Permissions[flag%100/10],
-		Permissions[flag%10])
+		permissions[flag/100],
+		permissions[flag%100/10],
+		permissions[flag%10])
 }

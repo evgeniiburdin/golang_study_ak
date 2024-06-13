@@ -10,7 +10,8 @@ func main() {
 	initValue, finalValue := "10.0", "15.0"
 	percentChange, err := CalculatePercentageChange(initValue, finalValue)
 	if err != nil {
-		panic(err)
+		fmt.Println(err.Error())
+		return
 	}
 	fmt.Printf("init value: %s, final value: %s, percent change: %.2f%%\n",
 		initValue, finalValue, percentChange)

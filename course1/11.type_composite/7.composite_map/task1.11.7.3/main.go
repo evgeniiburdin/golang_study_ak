@@ -4,11 +4,11 @@ import "strings"
 
 func createUniqueText(text string) string {
 	words := strings.Fields(text)
-	occurrences := make(map[string]bool)
+	occurrences := make(map[string]struct{})
 	var uniqueWords []string
 	for _, word := range words {
-		if !occurrences[word] {
-			occurrences[word] = true
+		if _, ok := occurrences[word]; !ok {
+			occurrences[word] = struct{}{}
 			uniqueWords = append(uniqueWords, word)
 		}
 	}

@@ -15,6 +15,7 @@ type Order struct {
 func (order *Order) AddDish(dish Dish) {
 	order.Dishes = append(order.Dishes, dish)
 }
+
 func (order *Order) RemoveDish(dish Dish) {
 	idx := 0
 	for pos, dishh := range order.Dishes {

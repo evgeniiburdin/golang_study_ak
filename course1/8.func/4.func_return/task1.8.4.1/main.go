@@ -8,10 +8,8 @@ func main() {
 }
 
 func DivideAndRemainder(a, b int) (int, int) {
-	defer func() {
-		if r := recover(); r != nil {
-			fmt.Println("check zero argument")
-		}
-	}()
+	if b == 0 {
+		return 0, 0
+	}
 	return a / b, a % b
 }

@@ -15,13 +15,10 @@ func getType(i interface{}) string {
 	case nil:
 		return "Пустой интерфейс"
 	case []int:
-
 		return "[]int"
 	case []float64:
-
 		return "[]float64"
 	case []string:
-
 		return "[]string"
 	case map[string]interface{}:
 		return "map[string]interface{}"

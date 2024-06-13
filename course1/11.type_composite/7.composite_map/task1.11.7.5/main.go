@@ -2,14 +2,15 @@ package main
 
 import "strings"
 
-func filterSentence(sentence string, filter map[string]bool) string {
+func filterSentence(sentence string, filter map[string]struct{}) string {
 	words := strings.Fields(sentence)
 	var resultWords []string
 
 	for _, word := range words {
-		if !filter[word] {
+		if _, ok := filter[word]; !ok {
 			resultWords = append(resultWords, word)
 		}
 	}
+
 	return strings.Join(resultWords, " ")
 }

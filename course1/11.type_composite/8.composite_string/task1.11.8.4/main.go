@@ -1,9 +1,11 @@
 package main
 
+import "strings"
+
 func concatStrings(xs ...string) string {
-	str := ""
+	str := strings.Builder{}
 	for _, x := range xs {
-		str += x
+		str.WriteString(x)
 	}
-	return str
+	return str.String()
 }

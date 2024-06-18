@@ -2,7 +2,9 @@ package main
 
 import (
 	"encoding/json"
+
 	"fmt"
+
 	"os"
 	"path/filepath"
 )
@@ -49,27 +51,27 @@ func writeJSON(filePath string, data []User) error {
 
 func main() {
 	data := []User{
-		{
-			"Alice",
-			35,
-			[]Comment{
-				{
-					"comment1",
+		User{
+			Name: "Alice",
+			Age:  35,
+			Comments: []Comment{
+				Comment{
+					Text: "comment1",
 				},
-				{
-					"comment2",
+				Comment{
+					Text: "comment2",
 				},
 			},
 		},
-		{
-			"Bob",
-			56,
-			[]Comment{
-				{
-					"comment3",
+		User{
+			Name: "Bob",
+			Age:  56,
+			Comments: []Comment{
+				Comment{
+					Text: "comment3",
 				},
-				{
-					"comment4",
+				Comment{
+					Text: "comment4",
 				},
 			},
 		},

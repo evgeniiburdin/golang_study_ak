@@ -2,8 +2,9 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	_ "github.com/mattn/go-sqlite3"
+
+	"fmt"
 	"log"
 )
 
@@ -51,7 +52,7 @@ func SelectUser(id int) (User, error) {
 
 	defer db.Close()
 
-	stmt := `SELECT * FROM users WHERE id = ?`
+	stmt := `SELECT id, name, age FROM users WHERE id = ?`
 	row := db.QueryRow(stmt, id)
 	var user User
 	err = row.Scan(&user.ID, &user.Name, &user.Age)

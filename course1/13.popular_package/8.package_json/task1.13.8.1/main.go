@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+
 	"fmt"
 	"log"
 )
@@ -53,7 +54,8 @@ func main() {
 	}
 	str, err := getJSON(users)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
+		return
 	}
 	fmt.Println(str)
 }

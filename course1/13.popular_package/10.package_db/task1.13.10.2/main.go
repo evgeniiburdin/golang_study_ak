@@ -2,11 +2,11 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
-	"log"
-
 	squirrel "github.com/Masterminds/squirrel"
 	_ "github.com/mattn/go-sqlite3"
+
+	"fmt"
+	"log"
 )
 
 type User struct {

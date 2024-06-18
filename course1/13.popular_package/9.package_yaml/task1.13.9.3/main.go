@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+
 	"gopkg.in/yaml.v2"
+
 	"os"
 	"path/filepath"
 )
@@ -46,27 +48,27 @@ func writeYAML(filePath string, data []User) error {
 
 func main() {
 	users := []User{
-		{
+		User{
 			Name: "Jane",
 			Age:  31,
 			Comments: []Comment{
-				{
-					"comment1",
+				Comment{
+					Text: "comment1",
 				},
-				{
-					"comment2",
+				Comment{
+					Text: "comment2",
 				},
 			},
 		},
-		{
+		User{
 			Name: "Joe",
 			Age:  32,
 			Comments: []Comment{
-				{
-					"filepath",
+				Comment{
+					Text: "filepath",
 				},
-				{
-					"filepath2",
+				Comment{
+					Text: "filepath2",
 				},
 			},
 		},

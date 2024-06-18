@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+
 	"fmt"
 )
 
@@ -16,9 +17,9 @@ type Comment struct {
 }
 
 func getUsersFromJSON(data []byte) ([]User, error) {
-	users := new([]User)
+	var users []User
 	err := json.Unmarshal(data, &users)
-	return *users, err
+	return users, err
 }
 
 func main() {

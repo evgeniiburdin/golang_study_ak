@@ -6,7 +6,7 @@ import (
 	"bytes"
 )
 
-func getScanner(b *bytes.Buffer) *bufio.Scanner {
-	scanner := bufio.NewScanner(b)
-	return scanner
+func getScanner(b bytes.Buffer) bufio.Scanner {
+	scanner := bufio.NewScanner(&b)
+	return *scanner
 }

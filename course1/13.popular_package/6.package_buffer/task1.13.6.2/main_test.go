@@ -8,19 +8,19 @@ import (
 
 func Test_getScanner(t *testing.T) {
 	type args struct {
-		b *bytes.Buffer
+		b bytes.Buffer
 	}
 	tests := []struct {
 		name string
 		args args
 		want string
 	}{
-		{"case1", args{bytes.NewBuffer([]byte("Hello\n,\n World!"))}, "Hello, World!"},
+		{"case1", args{*bytes.NewBuffer([]byte("Hello\n,\n World!"))}, "Hello, World!"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			scanner := getScanner(tt.args.b)
-			if scanner == nil {
+			if &scanner == nil {
 				t.Errorf("scanner is nil")
 			}
 			result := ""

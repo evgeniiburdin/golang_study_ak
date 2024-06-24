@@ -3,10 +3,8 @@ package main
 import (
 	"context"
 	"net/http"
-
 	"fmt"
 	"io"
-
 	"time"
 )
 

@@ -2,9 +2,7 @@ package main
 
 import (
 	"fmt"
-
 	"strings"
-
 	"sync"
 )
 

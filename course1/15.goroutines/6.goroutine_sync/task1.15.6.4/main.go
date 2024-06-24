@@ -2,12 +2,9 @@ package main
 
 import (
 	"fmt"
-
 	"strconv"
 	"strings"
-
 	"sync"
-
 	"time"
 )
 

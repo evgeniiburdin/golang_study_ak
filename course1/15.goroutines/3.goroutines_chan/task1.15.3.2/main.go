@@ -3,16 +3,15 @@ package main
 import (
 	"fmt"
 	"log"
-
 	"net/http"
 )
 
 func main() {
 	url := "https://httpbin.org/get"
-	parallelRequest := 5
+	requestsAtOneTimeLimit := 5
 	requestCount := 50
 
-	result := benchRequest(url, parallelRequest, requestCount)
+	result := benchRequest(url, requestsAtOneTimeLimit, requestCount)
 
 	for i := 0; i < requestCount; i++ {
 		statusCode := <-result
@@ -24,8 +23,8 @@ func main() {
 	fmt.Println("Все горутины завершили работу")
 }
 
-func benchRequest(url string, parallelRequest int, requestCount int) <-chan int {
-	limit := make(chan struct{}, parallelRequest)
+func benchRequest(url string, requestsAtOneTimeLimit int, requestCount int) <-chan int {
+	limit := make(chan struct{}, requestsAtOneTimeLimit)
 	results := make(chan int, requestCount)
 
 	for i := 0; i < requestCount; i++ {

@@ -2,9 +2,7 @@ package main
 
 import (
 	"context"
-
 	"fmt"
-
 	"time"
 )
 

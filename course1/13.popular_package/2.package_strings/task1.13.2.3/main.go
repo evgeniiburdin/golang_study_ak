@@ -2,10 +2,8 @@ package main
 
 import (
 	"crypto/rand"
-	"math/big"
-
 	"fmt"
-
+	"math/big"
 	"strings"
 )
 

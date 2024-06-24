@@ -2,9 +2,8 @@ package main
 
 import (
 	"fmt"
-	"strings"
-
 	"strconv"
+	"strings"
 )
 
 func generateMathString(operands []int, operator string) string {

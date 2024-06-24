@@ -2,10 +2,10 @@ package main
 
 import (
 	"database/sql"
-	_ "github.com/mattn/go-sqlite3"
-
 	"fmt"
 	"log"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type User struct {

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"student.vkusvill.ru/evgeniiburdin/go-course/course2/2.oop/3.oop_abstraction/task2.2.3.5/hashmap"
 )
 

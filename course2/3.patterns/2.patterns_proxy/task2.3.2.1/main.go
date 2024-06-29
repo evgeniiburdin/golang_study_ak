@@ -3,10 +3,11 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/cinar/indicator"
 	"io"
 	"log"
 	"net/http"
+
+	"github.com/cinar/indicator"
 )
 
 type Indicator interface {

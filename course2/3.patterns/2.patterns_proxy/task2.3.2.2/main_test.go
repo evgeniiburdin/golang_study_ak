@@ -2,9 +2,10 @@ package main
 
 import (
 	"context"
-	"github.com/google/go-github/v53/github"
 	"reflect"
 	"testing"
+
+	"github.com/google/go-github/v53/github"
 )
 
 // MockRepoLister является мок-реализацией интерфейса RepoLister

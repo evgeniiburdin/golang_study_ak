@@ -3,7 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
+	"os"
+
 	"github.com/google/go-github/v53/github"
+	"golang.org/x/oauth2"
 )
 
 // RepoLister интерфейс для получения списка репозиториев пользователя
@@ -143,7 +147,6 @@ func (g *GithubProxy) GetRepos(ctx context.Context, username string) ([]Item, er
 	return g.cache[fmt.Sprintf(username+"_repos")], nil
 }
 
-/*
 func main() {
 	ctx := context.Background()
 
@@ -184,4 +187,3 @@ func main() {
 		}
 	}
 }
-*/

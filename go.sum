@@ -22,6 +22,8 @@ github.com/google/go-cmp v0.5.5/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/
 github.com/hpcloud/tail v1.0.0/go.mod h1:ab1qPbhIpdTxEkNHXyeSf5vhxWSCs/tWer42PpOxQnU=
 github.com/icrowley/fake v0.0.0-20221112152111-d7b7e2276db2 h1:qU3v73XG4QAqCPHA4HOpfC1EfUvtLIDvQK4mNQ0LvgI=
 github.com/icrowley/fake v0.0.0-20221112152111-d7b7e2276db2/go.mod h1:dQ6TM/OGAe+cMws81eTe4Btv1dKxfPZ2CX+YaAFAPN4=
+github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
+github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
 github.com/ksrof/gocolors v0.1.0 h1:miEAwHYsyBHO19Yq7xsoUrMi/HdGBbh9+3oQn9+7DJk=
 github.com/ksrof/gocolors v0.1.0/go.mod h1:FdPd8atrR7Lmh/f2dZiJ3HIfGX/B+mji4welNhgIEN0=
 github.com/mattevans/dinero v0.8.0 h1:A0dBxkMFvQVkT0vtGwlqdZxr+qhIXnEPROTwIlxxP2A=

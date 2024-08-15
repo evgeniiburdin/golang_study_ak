@@ -1,8 +1,0 @@
-###
-POST http://localhost:8080/api/address/search
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNoaXNoa2EifQ.7Sk713PBDcxfuQFBM5Ruqao-uF9mMgMtHaVHgdNuWvg
-
-{
-  "address": "Berlin"
-}

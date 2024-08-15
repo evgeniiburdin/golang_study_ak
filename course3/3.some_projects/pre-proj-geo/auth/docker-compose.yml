@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  auth:
+    build: .
+    container_name: auth
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    networks:
+      - backend-network
+    environment:
+      PG_URL: postgres://postgres:postgres@localhost:5432/postgres
+      JWT_SIGNING_KEY: myverysecretsecret
+      USER_SERVICE_URL: user:8080
+
+networks:
+  auth-network:
+
+volumes:
+  pg-data:

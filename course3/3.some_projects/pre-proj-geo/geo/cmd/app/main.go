@@ -4,10 +4,10 @@ import (
 	"log"
 
 	"geo-service/config"
-	app_grpc "geo-service/internal/app/grpc"
-	app_http "geo-service/internal/app/http"
-	app_jsonrpc "geo-service/internal/app/jsonrpc"
-	app_rpc "geo-service/internal/app/rpc"
+	appgrpc "geo-service/internal/app/grpc"
+	apphttp "geo-service/internal/app/http"
+	appjsonrpc "geo-service/internal/app/jsonrpc"
+	apprpc "geo-service/internal/app/rpc"
 )
 
 func main() {
@@ -20,13 +20,13 @@ func main() {
 	// Run
 	switch cfg.App.Transport {
 	case "rpc":
-		app_rpc.Run(cfg)
+		apprpc.Run(cfg)
 	case "jsonrpc":
-		app_jsonrpc.Run(cfg)
+		appjsonrpc.Run(cfg)
 	case "grpc":
-		app_grpc.Run(cfg)
+		appgrpc.Run(cfg)
 	case "http":
-		app_http.Run(cfg)
+		apphttp.Run(cfg)
 	default:
 		log.Fatalf("Unknown transport type: %s", cfg.App.Transport)
 	}

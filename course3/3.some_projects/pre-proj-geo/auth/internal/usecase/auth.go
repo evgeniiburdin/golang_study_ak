@@ -1,24 +1,26 @@
 package usecase
 
 import (
-	"auth-service/internal/entity"
-	pb "auth-service/internal/usecase/user-service/user"
-	jwt_pkg "auth-service/pkg/jwt"
 	"context"
 	"fmt"
+
 	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/protobuf/types/known/emptypb"
+
+	"auth-service/internal/entity"
+	pb "auth-service/internal/usecase/user-service/user"
+	jwtpkg "auth-service/pkg/jwt"
 )
 
 // AuthUseCase -.
 type AuthUseCase struct {
 	userServiceClient pb.UserServiceClient
 	authRepo          AuthRepo
-	jwtService        jwt_pkg.JWTServicer
+	jwtService        jwtpkg.JWTServicer
 }
 
 // New -.
-func New(usc pb.UserServiceClient, r AuthRepo, js jwt_pkg.JWTServicer) *AuthUseCase {
+func New(usc pb.UserServiceClient, r AuthRepo, js jwtpkg.JWTServicer) *AuthUseCase {
 	return &AuthUseCase{
 		userServiceClient: usc,
 		authRepo:          r,

@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"user-service/config"
-	app_grpc "user-service/internal/app/grpc"
+	appgrpc "user-service/internal/app/grpc"
 )
 
 func main() {
@@ -17,7 +17,7 @@ func main() {
 	// Run
 	switch cfg.App.Transport {
 	case "grpc":
-		app_grpc.Run(cfg)
+		appgrpc.Run(cfg)
 	default:
 		log.Fatalf("Unknown transport type: %s", cfg.App.Transport)
 	}

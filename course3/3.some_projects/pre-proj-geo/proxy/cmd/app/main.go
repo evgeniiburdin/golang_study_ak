@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"geo-service-proxy/config"
-	app_http "geo-service-proxy/internal/app/http"
+	apphttp "geo-service-proxy/internal/app/http"
 )
 
 func main() {
@@ -17,7 +17,7 @@ func main() {
 	// Run
 	switch cfg.App.Transport {
 	case "http":
-		app_http.Run(cfg)
+		apphttp.Run(cfg)
 	default:
 		log.Fatalf("Unknown transport type: %s", cfg.App.Transport)
 	}

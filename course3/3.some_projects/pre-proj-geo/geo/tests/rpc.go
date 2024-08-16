@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"geo-service/internal/entity"
 	"log"
 	"net/rpc"
+
+	"geo-service/internal/entity"
 )
 
 func main() {

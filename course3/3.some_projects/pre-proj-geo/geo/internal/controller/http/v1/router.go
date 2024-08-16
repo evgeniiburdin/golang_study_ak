@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"geo-service/pkg/metrics"
 	_ "net/http/pprof"
 
 	"github.com/go-chi/chi/v5"
@@ -9,6 +8,7 @@ import (
 
 	"geo-service/internal/usecase"
 	"geo-service/pkg/logger"
+	"geo-service/pkg/metrics"
 )
 
 // NewRouter -.

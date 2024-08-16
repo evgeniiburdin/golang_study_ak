@@ -2,19 +2,21 @@
 package app_grpc
 
 import (
-	"auth-service/config"
-	grpc_controller "auth-service/internal/controller/grpc"
-	"auth-service/internal/usecase"
-	"auth-service/internal/usecase/repo"
-	pb "auth-service/internal/usecase/user-service/user"
-	jwt_pkg "auth-service/pkg/jwt"
-	"auth-service/pkg/logger"
-	"auth-service/pkg/postgres"
 	"fmt"
-	"google.golang.org/grpc"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"google.golang.org/grpc"
+
+	"auth-service/config"
+	grpccontroller "auth-service/internal/controller/grpc"
+	"auth-service/internal/usecase"
+	"auth-service/internal/usecase/repo"
+	pb "auth-service/internal/usecase/user-service/user"
+	jwtpkg "auth-service/pkg/jwt"
+	"auth-service/pkg/logger"
+	"auth-service/pkg/postgres"
 )
 
 // Run -.
@@ -43,10 +45,10 @@ func Run(cfg *config.Config) {
 	}*/
 
 	// Use case
-	addressUseCase := usecase.New(usc, repo.New(pg), &jwt_pkg.JWTService{})
+	addressUseCase := usecase.New(usc, repo.New(pg), &jwtpkg.JWTService{})
 
 	// GRPC Server
-	grpcServer := grpc_controller.NewGRPCServer(addressUseCase, lg, grpc_controller.Port(cfg.RPC.Port))
+	grpcServer := grpccontroller.NewGRPCServer(addressUseCase, lg, grpccontroller.Port(cfg.RPC.Port))
 	lg.Info("grpc listening on " + cfg.RPC.Port)
 
 	// Waiting for signal

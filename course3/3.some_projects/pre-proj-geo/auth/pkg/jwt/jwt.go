@@ -1,13 +1,15 @@
 package jwt
 
 import (
-	"auth-service/internal/entity"
 	"fmt"
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/joho/godotenv"
 	"log"
 	"os"
 	"time"
+
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/joho/godotenv"
+
+	"auth-service/internal/entity"
 )
 
 type JWTServicer interface {

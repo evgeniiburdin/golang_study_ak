@@ -8,7 +8,7 @@ import (
 	"syscall"
 
 	"geo-service/config"
-	rpc_internal "geo-service/internal/controller/rpc"
+	rpcinternal "geo-service/internal/controller/rpc"
 	"geo-service/internal/usecase"
 	"geo-service/internal/usecase/webapi"
 	"geo-service/pkg/logger"
@@ -22,7 +22,7 @@ func Run(cfg *config.Config) {
 	addressUseCase := usecase.New(webapi.New(cfg.OpenCage.APIKey))
 
 	// RPC Server
-	rpcServer, err := rpc_internal.NewRPCServer(addressUseCase, lg, rpc_internal.Port(cfg.RPC.Port))
+	rpcServer, err := rpcinternal.NewRPCServer(addressUseCase, lg, rpcinternal.Port(cfg.RPC.Port))
 	if err != nil {
 		lg.Fatal(fmt.Errorf("app - Run - rpcServer.New: %w", err))
 	}

@@ -3,10 +3,11 @@ package kafka
 import (
 	"context"
 	"fmt"
-	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"time"
+
+	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"user-service/internal/usecase"
-	kafka_pkg "user-service/pkg/kafka"
+	kafkapkg "user-service/pkg/kafka"
 	"user-service/pkg/logger"
 )
 
@@ -17,10 +18,10 @@ var topics []string = []string{
 type KafkaController struct {
 	uc usecase.Userer
 	lg logger.Interface
-	c  kafka_pkg.KafkaConsumer
+	c  kafkapkg.KafkaConsumer
 }
 
-func New(uc usecase.Userer, lg logger.Interface, c kafka_pkg.KafkaConsumer) *KafkaController {
+func New(uc usecase.Userer, lg logger.Interface, c kafkapkg.KafkaConsumer) *KafkaController {
 	return &KafkaController{
 		uc: uc,
 		lg: lg,

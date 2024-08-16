@@ -1,8 +1,9 @@
 package usecase
 
 import (
-	"auth-service/internal/entity"
 	"context"
+
+	"auth-service/internal/entity"
 )
 
 type (

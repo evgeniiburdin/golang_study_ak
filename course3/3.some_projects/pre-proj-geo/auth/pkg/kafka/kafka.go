@@ -1,11 +1,13 @@
 package kafka
 
 import (
-	"auth-service/pkg/logger"
 	"encoding/json"
 	"fmt"
-	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"time"
+
+	"github.com/confluentinc/confluent-kafka-go/kafka"
+
+	"auth-service/pkg/logger"
 )
 
 type KafkaProducer struct {
@@ -60,11 +62,6 @@ func (kp *KafkaProducer) SerializeAndProduce(message interface{}, topic string) 
 	return nil
 }
 
-func (kp *KafkaProducer) Close() error {
-	err := kp.Close()
-	if err != nil {
-		return fmt.Errorf("failed to close Kafka producer: %w", err)
-	}
-
-	return nil
+func (kp *KafkaProducer) Close() {
+	kp.producer.Close()
 }

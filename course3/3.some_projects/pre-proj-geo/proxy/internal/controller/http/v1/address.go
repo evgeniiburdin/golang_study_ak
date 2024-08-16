@@ -4,14 +4,15 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"geo-service-proxy/internal/entity"
-	"github.com/go-chi/chi/v5"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
-	httpSwagger "github.com/swaggo/http-swagger"
 	"net/http"
 	_ "net/http/pprof"
 
+	"github.com/go-chi/chi/v5"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	httpSwagger "github.com/swaggo/http-swagger"
+
 	_ "geo-service-proxy/docs"
+	"geo-service-proxy/internal/entity"
 	"geo-service-proxy/internal/usecase"
 	"geo-service-proxy/pkg/logger"
 )
@@ -154,7 +155,7 @@ func (routes *proxyRoutes) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(resp)
+	_ = json.NewEncoder(w).Encode(resp)
 }
 
 // @Summary     Get user information
@@ -184,7 +185,7 @@ func (routes *proxyRoutes) GetUser(w http.ResponseWriter, r *http.Request) {
 	user, err := routes.uc.GetUser(ctx, req.AccessToken)
 	if err != nil {
 		errorResponse(w, http.StatusUnauthorized, err.Error())
-		routes.lg.Error(fmt.Errorf("http - GetUser - usecase.GetUser: %w", err.Error()))
+		routes.lg.Error(fmt.Errorf("http - GetUser - usecase.GetUser: %w", err))
 		return
 	}
 
@@ -194,7 +195,7 @@ func (routes *proxyRoutes) GetUser(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(resp)
+	_ = json.NewEncoder(w).Encode(resp)
 }
 
 // @Summary     Get all users
@@ -224,7 +225,7 @@ func (routes *proxyRoutes) GetUsers(w http.ResponseWriter, r *http.Request) {
 	users, err := routes.uc.GetUsers(ctx, req.AccessToken)
 	if err != nil {
 		errorResponse(w, http.StatusUnauthorized, err.Error())
-		routes.lg.Error(fmt.Errorf("http - GetUsers - usecase.GetUsers: %w", err.Error()))
+		routes.lg.Error(fmt.Errorf("http - GetUsers - usecase.GetUsers: %w", err))
 		return
 	}
 
@@ -234,7 +235,7 @@ func (routes *proxyRoutes) GetUsers(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(resp)
+	_ = json.NewEncoder(w).Encode(resp)
 }
 
 // @Summary     Update user information
@@ -277,7 +278,7 @@ func (routes *proxyRoutes) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	err = routes.uc.UpdateUser(ctx, accessToken, user)
 	if err != nil {
 		errorResponse(w, http.StatusUnauthorized, err.Error())
-		routes.lg.Error(fmt.Errorf("http - UpdateUser - usecase.UpdateUser: %w", err.Error()))
+		routes.lg.Error(fmt.Errorf("http - UpdateUser - usecase.UpdateUser: %w", err))
 		return
 	}
 
@@ -312,7 +313,7 @@ func (routes *proxyRoutes) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	err := routes.uc.DeleteUser(ctx, req.AccessToken)
 	if err != nil {
 		errorResponse(w, http.StatusUnauthorized, err.Error())
-		routes.lg.Error(fmt.Errorf("http - DeleteUser - usecase.DeleteUser: %w", err.Error()))
+		routes.lg.Error(fmt.Errorf("http - DeleteUser - usecase.DeleteUser: %w", err))
 		return
 	}
 
@@ -345,7 +346,7 @@ func (routes *proxyRoutes) Login(w http.ResponseWriter, r *http.Request) {
 	accessToken, refreshToken, err := routes.uc.Login(ctx, req.Email, req.Password)
 	if err != nil {
 		errorResponse(w, http.StatusUnauthorized, err.Error())
-		routes.lg.Error(fmt.Errorf("http - Login - usecase.Login: %w", err.Error()))
+		routes.lg.Error(fmt.Errorf("http - Login - usecase.Login: %w", err))
 		return
 	}
 
@@ -356,7 +357,7 @@ func (routes *proxyRoutes) Login(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(resp)
+	_ = json.NewEncoder(w).Encode(resp)
 }
 
 type logoutRequest struct {
@@ -391,7 +392,7 @@ func (routes *proxyRoutes) Logout(w http.ResponseWriter, r *http.Request) {
 	err := routes.uc.Logout(ctx, req.AccessToken)
 	if err != nil {
 		errorResponse(w, http.StatusUnauthorized, err.Error())
-		routes.lg.Error(fmt.Errorf("http - Logout - usecase.Logout: %w", err.Error()))
+		routes.lg.Error(fmt.Errorf("http - Logout - usecase.Logout: %w", err))
 		return
 	}
 
@@ -426,7 +427,7 @@ func (routes *proxyRoutes) ValidateToken(w http.ResponseWriter, r *http.Request)
 	err := routes.uc.ValidateToken(ctx, req.Token)
 	if err != nil {
 		errorResponse(w, http.StatusUnauthorized, err.Error())
-		routes.lg.Error(fmt.Errorf("http - ValidateToken - usecase.ValidateToken: %w", err.Error()))
+		routes.lg.Error(fmt.Errorf("http - ValidateToken - usecase.ValidateToken: %w", err))
 		return
 	}
 
@@ -459,7 +460,8 @@ func (routes *proxyRoutes) RefreshToken(w http.ResponseWriter, r *http.Request) 
 	accessToken, refreshToken, err := routes.uc.RefreshToken(ctx, req.RefreshToken)
 	if err != nil {
 		errorResponse(w, http.StatusInternalServerError, err.Error())
-		routes.lg.Error(fmt.Errorf("http - RefreshToken - failed to refresh token: %w", err.Error()))
+
+		routes.lg.Error(fmt.Errorf("http - RefreshToken - failed to refresh token: %w", err))
 		return
 	}
 
@@ -470,7 +472,7 @@ func (routes *proxyRoutes) RefreshToken(w http.ResponseWriter, r *http.Request) 
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(resp)
+	_ = json.NewEncoder(w).Encode(resp)
 }
 
 // @Summary     Convert geocode to address
@@ -526,7 +528,7 @@ func (routes *proxyRoutes) GeocodeToAddress(w http.ResponseWriter, r *http.Reque
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(resp)
+	_ = json.NewEncoder(w).Encode(resp)
 }
 
 func handlerToHandlerFunc(h http.Handler) http.HandlerFunc {

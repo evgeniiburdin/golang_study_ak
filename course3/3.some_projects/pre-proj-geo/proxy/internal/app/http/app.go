@@ -3,22 +3,23 @@ package app_http
 
 import (
 	"fmt"
-	"geo-service-proxy/config"
-	pb_auth "geo-service-proxy/internal/usecase/auth-service/auth"
-	pb_geo "geo-service-proxy/internal/usecase/geo-service/geo"
-	"geo-service-proxy/pkg/metrics"
-	"google.golang.org/grpc"
 	"log"
 	_ "net/http/pprof"
 	"os"
 	"os/signal"
 	"syscall"
 
+	"github.com/go-chi/chi/v5"
+	"google.golang.org/grpc"
+
+	"geo-service-proxy/config"
 	v1 "geo-service-proxy/internal/controller/http/v1"
 	"geo-service-proxy/internal/usecase"
+	pbauth "geo-service-proxy/internal/usecase/auth-service/auth"
+	pbgeo "geo-service-proxy/internal/usecase/geo-service/geo"
 	"geo-service-proxy/pkg/httpserver"
 	"geo-service-proxy/pkg/logger"
-	"github.com/go-chi/chi/v5"
+	"geo-service-proxy/pkg/metrics"
 )
 
 // Run -.
@@ -32,7 +33,7 @@ func Run(cfg *config.Config) {
 	}
 	defer geoConn.Close()
 
-	geoClient := pb_geo.NewGeoServiceClient(geoConn)
+	geoClient := pbgeo.NewGeoServiceClient(geoConn)
 
 	// Auth-service grpc client
 	authConn, err := grpc.Dial(cfg.App.AuthServiceAddress, grpc.WithInsecure())
@@ -41,7 +42,7 @@ func Run(cfg *config.Config) {
 	}
 	defer authConn.Close()
 
-	authClient := pb_auth.NewAuthServiceClient(authConn)
+	authClient := pbauth.NewAuthServiceClient(authConn)
 
 	// Use case
 	proxyUseCase := usecase.New(authClient, geoClient)

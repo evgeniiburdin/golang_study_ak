@@ -5,16 +5,16 @@ import (
 	"errors"
 
 	"user-service/internal/entity"
-	redis_pkg "user-service/pkg/redis"
+	redispkg "user-service/pkg/redis"
 )
 
 // UserCache -.
 type UserCache struct {
-	Redis *redis_pkg.Redis
+	Redis *redispkg.Redis
 }
 
 // New -.
-func New(r *redis_pkg.Redis) (*UserCache, error) {
+func New(r *redispkg.Redis) (*UserCache, error) {
 	if r == nil {
 		return nil, errors.New("redis client is nil")
 	}

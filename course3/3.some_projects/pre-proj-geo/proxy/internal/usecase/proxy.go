@@ -2,19 +2,20 @@ package usecase
 
 import (
 	"context"
+
 	"geo-service-proxy/internal/entity"
-	pb_auth "geo-service-proxy/internal/usecase/auth-service/auth"
-	pb_geo "geo-service-proxy/internal/usecase/geo-service/geo"
+	pbauth "geo-service-proxy/internal/usecase/auth-service/auth"
+	pbgeo "geo-service-proxy/internal/usecase/geo-service/geo"
 )
 
 // ProxyUseCase -.
 type ProxyUseCase struct {
-	authServiceClient pb_auth.AuthServiceClient
-	geoServiceClient  pb_geo.GeoServiceClient
+	authServiceClient pbauth.AuthServiceClient
+	geoServiceClient  pbgeo.GeoServiceClient
 }
 
 // New -.
-func New(asc pb_auth.AuthServiceClient, gsc pb_geo.GeoServiceClient) *ProxyUseCase {
+func New(asc pbauth.AuthServiceClient, gsc pbgeo.GeoServiceClient) *ProxyUseCase {
 	return &ProxyUseCase{
 		authServiceClient: asc,
 		geoServiceClient:  gsc,
@@ -22,8 +23,8 @@ func New(asc pb_auth.AuthServiceClient, gsc pb_geo.GeoServiceClient) *ProxyUseCa
 }
 
 func (uc *ProxyUseCase) CreateUser(ctx context.Context, user entity.User) (accessToken, refreshToken string, err error) {
-	resp, err := uc.authServiceClient.CreateUser(ctx, &pb_auth.CreateUserRequest{
-		User: &pb_auth.User{
+	resp, err := uc.authServiceClient.CreateUser(ctx, &pbauth.CreateUserRequest{
+		User: &pbauth.User{
 			Username: user.Username,
 			Password: user.Password,
 			Email:    user.Email,
@@ -38,7 +39,7 @@ func (uc *ProxyUseCase) CreateUser(ctx context.Context, user entity.User) (acces
 }
 
 func (uc *ProxyUseCase) GetUser(ctx context.Context, accessToken string) (entity.User, error) {
-	resp, err := uc.authServiceClient.GetUser(ctx, &pb_auth.GetUserRequest{
+	resp, err := uc.authServiceClient.GetUser(ctx, &pbauth.GetUserRequest{
 		AccessToken: accessToken,
 	})
 	if err != nil {
@@ -56,7 +57,7 @@ func (uc *ProxyUseCase) GetUser(ctx context.Context, accessToken string) (entity
 }
 
 func (uc *ProxyUseCase) GetUsers(ctx context.Context, accessToken string) ([]entity.User, error) {
-	resp, err := uc.authServiceClient.GetUsers(ctx, &pb_auth.GetUsersRequest{
+	resp, err := uc.authServiceClient.GetUsers(ctx, &pbauth.GetUsersRequest{
 		AccessToken: accessToken,
 	})
 	if err != nil {
@@ -77,9 +78,9 @@ func (uc *ProxyUseCase) GetUsers(ctx context.Context, accessToken string) ([]ent
 }
 
 func (uc *ProxyUseCase) UpdateUser(ctx context.Context, accessToken string, user entity.User) error {
-	_, err := uc.authServiceClient.UpdateUser(ctx, &pb_auth.UpdateUserRequest{
+	_, err := uc.authServiceClient.UpdateUser(ctx, &pbauth.UpdateUserRequest{
 		AccessToken: accessToken,
-		User: &pb_auth.User{
+		User: &pbauth.User{
 			Username: user.Username,
 			Password: user.Password,
 			Email:    user.Email,
@@ -91,7 +92,7 @@ func (uc *ProxyUseCase) UpdateUser(ctx context.Context, accessToken string, user
 }
 
 func (uc *ProxyUseCase) DeleteUser(ctx context.Context, accessToken string) error {
-	_, err := uc.authServiceClient.DeleteUser(ctx, &pb_auth.DeleteUserRequest{
+	_, err := uc.authServiceClient.DeleteUser(ctx, &pbauth.DeleteUserRequest{
 		AccessToken: accessToken,
 	})
 
@@ -99,7 +100,7 @@ func (uc *ProxyUseCase) DeleteUser(ctx context.Context, accessToken string) erro
 }
 
 func (uc *ProxyUseCase) Login(ctx context.Context, email, password string) (accessToken, refreshToken string, err error) {
-	resp, err := uc.authServiceClient.Login(ctx, &pb_auth.LoginRequest{
+	resp, err := uc.authServiceClient.Login(ctx, &pbauth.LoginRequest{
 		Email:    email,
 		Password: password,
 	})
@@ -114,7 +115,7 @@ func (uc *ProxyUseCase) Login(ctx context.Context, email, password string) (acce
 }
 
 func (uc *ProxyUseCase) Logout(ctx context.Context, accessToken string) error {
-	_, err := uc.authServiceClient.Logout(ctx, &pb_auth.LogoutRequest{
+	_, err := uc.authServiceClient.Logout(ctx, &pbauth.LogoutRequest{
 		AccessToken: accessToken,
 	})
 
@@ -122,7 +123,7 @@ func (uc *ProxyUseCase) Logout(ctx context.Context, accessToken string) error {
 }
 
 func (uc *ProxyUseCase) ValidateToken(ctx context.Context, jwt string) error {
-	_, err := uc.authServiceClient.ValidateToken(ctx, &pb_auth.ValidateTokenRequest{
+	_, err := uc.authServiceClient.ValidateToken(ctx, &pbauth.ValidateTokenRequest{
 		AccessToken: jwt,
 	})
 
@@ -130,7 +131,7 @@ func (uc *ProxyUseCase) ValidateToken(ctx context.Context, jwt string) error {
 }
 
 func (uc *ProxyUseCase) RefreshToken(ctx context.Context, refreshToken string) (newAccessToken, newRefreshToken string, err error) {
-	resp, err := uc.authServiceClient.RefreshToken(ctx, &pb_auth.RefreshTokenRequest{
+	resp, err := uc.authServiceClient.RefreshToken(ctx, &pbauth.RefreshTokenRequest{
 		RefreshToken: refreshToken,
 	})
 	if err != nil {
@@ -144,7 +145,7 @@ func (uc *ProxyUseCase) RefreshToken(ctx context.Context, refreshToken string) (
 }
 
 func (uc *ProxyUseCase) GeocodeToAddress(ctx context.Context, geocode entity.Geocode) (address entity.Address, err error) {
-	resp, err := uc.geoServiceClient.GeocodeToAddress(ctx, &pb_geo.Geocode{
+	resp, err := uc.geoServiceClient.GeocodeToAddress(ctx, &pbgeo.Geocode{
 		Lat: geocode.Lat,
 		Lng: geocode.Lng,
 	})

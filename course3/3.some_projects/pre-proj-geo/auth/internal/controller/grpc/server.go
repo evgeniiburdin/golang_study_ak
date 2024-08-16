@@ -1,19 +1,20 @@
 package grpc
 
 import (
-	"auth-service/internal/entity"
 	"context"
 	"fmt"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/emptypb"
 	"net"
 	"time"
 
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
+
 	pb "auth-service/internal/controller/grpc/gen/auth-service/auth"
+	"auth-service/internal/entity"
 	"auth-service/internal/usecase"
 	"auth-service/pkg/logger"
-	"google.golang.org/grpc"
 )
 
 const (
@@ -129,7 +130,7 @@ func (s *GRPCServer) GetUsers(ctx context.Context, req *pb.GetUsersRequest) (*pb
 
 	defer func() {
 		timeTaken := time.Since(startTime)
-		s.lg.Info(fmt.Sprintf("grpc - GetUsers: request { %#v } completed in %dms with response { accessToken: %s, refreshToken: %s, error: %#v }",
+		s.lg.Info(fmt.Sprintf("grpc - GetUsers: request { %#v } completed in %dms with response { users: %+v, error: %#v }",
 			req, timeTaken.Milliseconds(), users, err))
 	}()
 

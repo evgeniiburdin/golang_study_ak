@@ -7,8 +7,6 @@ import (
 	"auth-service/pkg/postgres"
 )
 
-const _defaultEntityCap = 64
-
 // AuthRepo -.
 type AuthRepo struct {
 	*postgres.Postgres

@@ -3,12 +3,13 @@ package app_http
 
 import (
 	"fmt"
-	"geo-service/pkg/metrics"
 	"log"
 	_ "net/http/pprof"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/go-chi/chi/v5"
 
 	"geo-service/config"
 	v1 "geo-service/internal/controller/http/v1"
@@ -16,7 +17,7 @@ import (
 	"geo-service/internal/usecase/webapi"
 	"geo-service/pkg/httpserver"
 	"geo-service/pkg/logger"
-	"github.com/go-chi/chi/v5"
+	"geo-service/pkg/metrics"
 )
 
 // Run -.

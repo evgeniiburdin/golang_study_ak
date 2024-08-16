@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+
 	"user-service/config"
 	"user-service/internal/controller/grpc"
 	"user-service/internal/usecase"
@@ -13,7 +14,7 @@ import (
 	"user-service/internal/usecase/repo"
 	"user-service/pkg/logger"
 	"user-service/pkg/postgres"
-	redis_pkg "user-service/pkg/redis"
+	redispkg "user-service/pkg/redis"
 )
 
 // Run -.
@@ -28,7 +29,7 @@ func Run(cfg *config.Config) {
 	defer pg.Close()
 
 	// Cache
-	r, err := redis_pkg.New(cfg.Redis.Addr)
+	r, err := redispkg.New(cfg.Redis.Addr)
 	if err != nil {
 		lg.Fatal(fmt.Errorf("app - Run - redis_pkg.New: %w", err))
 	}

@@ -1,0 +1,55 @@
+definitions:
+  v1.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  v1.geocodeToAddressResponse:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+    required:
+    - city
+    - country
+    type: object
+info:
+  contact: {}
+paths:
+  /api/address/geocode:
+    post:
+      consumes:
+      - application/json
+      description: Converts latitude and longitude to a human-readable address
+      operationId: geocodeToAddress
+      parameters:
+      - description: Latitude
+        in: query
+        name: lat
+        required: true
+        type: string
+      - description: Longitude
+        in: query
+        name: lng
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.geocodeToAddressResponse'
+        "400":
+          description: invalid request parameters
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: internal server error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Convert geocode to address
+      tags:
+      - address
+swagger: "2.0"

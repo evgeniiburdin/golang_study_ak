@@ -1,0 +1,14 @@
+app:
+  name: 'geo-service'
+  version: '1.0.0'
+  transport: 'grpc' # http/rpc/jsonrpc/grpc
+
+http:
+  port: '8080'
+  swaggerURL: 'http://localhost:8080/swagger/doc.json' # comment line to disable swagger docs
+
+rpc:
+  port: '8080'
+
+logger:
+  level: 'debug'

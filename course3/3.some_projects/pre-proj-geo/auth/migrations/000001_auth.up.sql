@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS auth (
+    email VARCHAR(255) UNIQUE,
+    refreshToken VARCHAR(255) UNIQUE
+);

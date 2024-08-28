@@ -7,6 +7,10 @@ import (
 	apphttp "geo-service-proxy/internal/app/http"
 )
 
+const (
+	transportTypeHTTP = "http"
+)
+
 func main() {
 	// Configuration
 	cfg, err := config.NewConfig()
@@ -16,7 +20,7 @@ func main() {
 
 	// Run
 	switch cfg.App.Transport {
-	case "http":
+	case transportTypeHTTP:
 		apphttp.Run(cfg)
 	default:
 		log.Fatalf("Unknown transport type: %s", cfg.App.Transport)

@@ -7,6 +7,10 @@ import (
 	appgrpc "auth-service/internal/app/grpc"
 )
 
+const (
+	transportTypeGRPC = "grpc"
+)
+
 func main() {
 	// Configuration
 	cfg, err := config.NewConfig()
@@ -16,7 +20,7 @@ func main() {
 
 	// Run
 	switch cfg.App.Transport {
-	case "grpc":
+	case transportTypeGRPC:
 		appgrpc.Run(cfg)
 	default:
 		log.Fatalf("Unknown transport type: %s", cfg.App.Transport)

@@ -3,6 +3,8 @@ package app_http
 
 import (
 	"fmt"
+	pbauth "geo-service-proxy/api/auth-service/auth"
+	pbgeo "geo-service-proxy/api/geo-service/geo"
 	"log"
 	_ "net/http/pprof"
 	"os"
@@ -15,8 +17,6 @@ import (
 	"geo-service-proxy/config"
 	v1 "geo-service-proxy/internal/controller/http/v1"
 	"geo-service-proxy/internal/usecase"
-	pbauth "geo-service-proxy/internal/usecase/auth-service/auth"
-	pbgeo "geo-service-proxy/internal/usecase/geo-service/geo"
 	"geo-service-proxy/pkg/httpserver"
 	"geo-service-proxy/pkg/logger"
 	"geo-service-proxy/pkg/metrics"

@@ -15,8 +15,8 @@ import (
 )
 
 const (
-	_defaultAttempts = 20
-	_defaultTimeout  = time.Second
+	defaultAttempts = 20
+	defaultTimeout  = time.Second
 )
 
 func init() {
@@ -28,7 +28,7 @@ func init() {
 	databaseURL += "?sslmode=disable"
 
 	var (
-		attempts = _defaultAttempts
+		attempts = defaultAttempts
 		err      error
 		m        *migratepkg.Migrate
 	)
@@ -40,7 +40,7 @@ func init() {
 		}
 
 		log.Printf("Migrate: postgres is trying to connect, attempts left: %d", attempts)
-		time.Sleep(_defaultTimeout)
+		time.Sleep(defaultTimeout)
 		attempts--
 	}
 

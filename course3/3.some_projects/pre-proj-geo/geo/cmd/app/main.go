@@ -10,6 +10,13 @@ import (
 	apprpc "geo-service/internal/app/rpc"
 )
 
+const (
+	transportTypeRPC     = "rpc"
+	transportTypeJSONRPC = "jsonrpc"
+	transportTypeGRPC    = "grpc"
+	transportTypeHTTP    = "http"
+)
+
 func main() {
 	// Configuration
 	cfg, err := config.NewConfig()
@@ -19,13 +26,13 @@ func main() {
 
 	// Run
 	switch cfg.App.Transport {
-	case "rpc":
+	case transportTypeRPC:
 		apprpc.Run(cfg)
-	case "jsonrpc":
+	case transportTypeJSONRPC:
 		appjsonrpc.Run(cfg)
-	case "grpc":
+	case transportTypeGRPC:
 		appgrpc.Run(cfg)
-	case "http":
+	case transportTypeHTTP:
 		apphttp.Run(cfg)
 	default:
 		log.Fatalf("Unknown transport type: %s", cfg.App.Transport)

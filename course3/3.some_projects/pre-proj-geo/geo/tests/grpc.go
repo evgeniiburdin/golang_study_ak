@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"geo-service/api/geo/grpc/gen/geo-service/geo"
 	"net"
 	"testing"
 
@@ -9,8 +10,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
-
-	pb "geo-service/internal/controller/grpc/gen/geo-service/geo"
 )
 
 const bufSize = 1024 * 1024
@@ -27,8 +26,8 @@ func TestGeocodeToAddress(t *testing.T) {
 	assert.NoError(t, err)
 	defer conn.Close()
 
-	client := pb.NewGeoServiceClient(conn)
-	resp, err := client.GeocodeToAddress(ctx, &pb.Geocode{Lat: "47.6062", Lng: "-122.3321"})
+	client := geo.NewGeoServiceClient(conn)
+	resp, err := client.GeocodeToAddress(ctx, &geo.Geocode{Lat: "47.6062", Lng: "-122.3321"})
 	assert.NoError(t, err)
 	assert.Equal(t, "USA", resp.Country)
 	assert.Equal(t, "Seattle", resp.City)

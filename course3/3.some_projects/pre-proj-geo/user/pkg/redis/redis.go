@@ -8,9 +8,9 @@ import (
 )
 
 const (
-	_defaultMaxPoolSize  = 1
-	_defaultConnAttempts = 10
-	_defaultConnTimeout  = time.Second
+	defaultMaxPoolSize  = 1
+	defaultConnAttempts = 10
+	defaultConnTimeout  = time.Second
 )
 
 type Redis struct {
@@ -23,9 +23,9 @@ type Redis struct {
 
 func New(addr string, opts ...Option) (*Redis, error) {
 	r := &Redis{
-		maxPoolSize:  _defaultMaxPoolSize,
-		connAttempts: _defaultConnAttempts,
-		connTimeout:  _defaultConnTimeout,
+		maxPoolSize:  defaultMaxPoolSize,
+		connAttempts: defaultConnAttempts,
+		connTimeout:  defaultConnTimeout,
 	}
 
 	for _, opt := range opts {

@@ -12,9 +12,9 @@ import (
 )
 
 const (
-	_defaultMaxPoolSize  = 1
-	_defaultConnAttempts = 10
-	_defaultConnTimeout  = time.Second
+	defaultMaxPoolSize  = 1
+	defaultConnAttempts = 10
+	defaultConnTimeout  = time.Second
 )
 
 // Postgres -.
@@ -30,9 +30,9 @@ type Postgres struct {
 // New -.
 func New(url string, opts ...Option) (*Postgres, error) {
 	pg := &Postgres{
-		maxPoolSize:  _defaultMaxPoolSize,
-		connAttempts: _defaultConnAttempts,
-		connTimeout:  _defaultConnTimeout,
+		maxPoolSize:  defaultMaxPoolSize,
+		connAttempts: defaultConnAttempts,
+		connTimeout:  defaultConnTimeout,
 	}
 
 	// Custom options

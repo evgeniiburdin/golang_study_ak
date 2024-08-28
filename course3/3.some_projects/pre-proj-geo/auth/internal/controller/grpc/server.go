@@ -1,6 +1,7 @@
 package grpc
 
 import (
+	"auth-service/api/auth/gen/auth-service/auth"
 	"context"
 	"fmt"
 	"net"
@@ -11,18 +12,17 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	pb "auth-service/internal/controller/grpc/gen/auth-service/auth"
 	"auth-service/internal/entity"
 	"auth-service/internal/usecase"
 	"auth-service/pkg/logger"
 )
 
 const (
-	_defaultShutdownTimeout = 3 * time.Second
+	defaultShutdownTimeout = 3 * time.Second
 )
 
 type GRPCServer struct {
-	pb.UnimplementedAuthServiceServer
+	auth.UnimplementedAuthServiceServer
 	server          *grpc.Server
 	listener        net.Listener
 	notify          chan error
@@ -36,11 +36,11 @@ func NewGRPCServer(uc usecase.Auther, lg logger.Interface, opts ...Option) *GRPC
 		server:          grpc.NewServer(),
 		listener:        nil,
 		notify:          make(chan error, 1),
-		shutdownTimeout: _defaultShutdownTimeout,
+		shutdownTimeout: defaultShutdownTimeout,
 		uc:              uc,
 		lg:              lg,
 	}
-	pb.RegisterAuthServiceServer(grpcServer.server, grpcServer)
+	auth.RegisterAuthServiceServer(grpcServer.server, grpcServer)
 
 	// Custom options
 	for _, opt := range opts {
@@ -69,7 +69,7 @@ func (s *GRPCServer) Shutdown() {
 	s.server.GracefulStop()
 }
 
-func (s *GRPCServer) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
+func (s *GRPCServer) CreateUser(ctx context.Context, req *auth.CreateUserRequest) (*auth.CreateUserResponse, error) {
 	startTime := time.Now()
 
 	accessToken, refreshToken, err := s.uc.CreateUser(ctx, entity.User{
@@ -89,13 +89,13 @@ func (s *GRPCServer) CreateUser(ctx context.Context, req *pb.CreateUserRequest) 
 			req, timeTaken.Milliseconds(), accessToken, refreshToken, err))
 	}()
 
-	return &pb.CreateUserResponse{
+	return &auth.CreateUserResponse{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, nil
 }
 
-func (s *GRPCServer) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserResponse, error) {
+func (s *GRPCServer) GetUser(ctx context.Context, req *auth.GetUserRequest) (*auth.GetUserResponse, error) {
 	startTime := time.Now()
 
 	user, err := s.uc.GetUser(ctx, req.AccessToken)
@@ -110,8 +110,8 @@ func (s *GRPCServer) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.G
 			req, timeTaken.Milliseconds(), user, err))
 	}()
 
-	return &pb.GetUserResponse{
-		User: &pb.User{
+	return &auth.GetUserResponse{
+		User: &auth.User{
 			Username: user.Username,
 			Email:    user.Email,
 			Role:     user.Role,
@@ -119,7 +119,7 @@ func (s *GRPCServer) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.G
 	}, nil
 }
 
-func (s *GRPCServer) GetUsers(ctx context.Context, req *pb.GetUsersRequest) (*pb.GetUsersResponse, error) {
+func (s *GRPCServer) GetUsers(ctx context.Context, req *auth.GetUsersRequest) (*auth.GetUsersResponse, error) {
 	startTime := time.Now()
 
 	users, err := s.uc.GetUsers(ctx, req.AccessToken)
@@ -134,21 +134,21 @@ func (s *GRPCServer) GetUsers(ctx context.Context, req *pb.GetUsersRequest) (*pb
 			req, timeTaken.Milliseconds(), users, err))
 	}()
 
-	respUsers := make([]*pb.User, len(users))
+	respUsers := make([]*auth.User, len(users))
 	for i, user := range users {
-		respUsers[i] = &pb.User{
+		respUsers[i] = &auth.User{
 			Username: user.Username,
 			Email:    user.Email,
 			Role:     user.Role,
 		}
 	}
 
-	return &pb.GetUsersResponse{
+	return &auth.GetUsersResponse{
 		Users: respUsers,
 	}, nil
 }
 
-func (s *GRPCServer) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) (*emptypb.Empty, error) {
+func (s *GRPCServer) UpdateUser(ctx context.Context, req *auth.UpdateUserRequest) (*emptypb.Empty, error) {
 	startTime := time.Now()
 
 	err := s.uc.UpdateUser(ctx, req.AccessToken, entity.User{
@@ -171,7 +171,7 @@ func (s *GRPCServer) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) 
 	return &emptypb.Empty{}, nil
 }
 
-func (s *GRPCServer) DeleteUser(ctx context.Context, req *pb.DeleteUserRequest) (*emptypb.Empty, error) {
+func (s *GRPCServer) DeleteUser(ctx context.Context, req *auth.DeleteUserRequest) (*emptypb.Empty, error) {
 	startTime := time.Now()
 
 	err := s.uc.DeleteUser(ctx, req.AccessToken)
@@ -189,7 +189,7 @@ func (s *GRPCServer) DeleteUser(ctx context.Context, req *pb.DeleteUserRequest) 
 	return &emptypb.Empty{}, nil
 }
 
-func (s *GRPCServer) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
+func (s *GRPCServer) Login(ctx context.Context, req *auth.LoginRequest) (*auth.LoginResponse, error) {
 	startTime := time.Now()
 
 	accessToken, refreshToken, err := s.uc.Login(ctx, req.Email, req.Password)
@@ -204,13 +204,13 @@ func (s *GRPCServer) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Login
 			req, timeTaken.Milliseconds(), accessToken, refreshToken, err))
 	}()
 
-	return &pb.LoginResponse{
+	return &auth.LoginResponse{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, nil
 }
 
-func (s *GRPCServer) Logout(ctx context.Context, req *pb.LogoutRequest) (*emptypb.Empty, error) {
+func (s *GRPCServer) Logout(ctx context.Context, req *auth.LogoutRequest) (*emptypb.Empty, error) {
 	startTime := time.Now()
 
 	err := s.uc.Logout(ctx, req.AccessToken)
@@ -228,7 +228,7 @@ func (s *GRPCServer) Logout(ctx context.Context, req *pb.LogoutRequest) (*emptyp
 	return &emptypb.Empty{}, nil
 }
 
-func (s *GRPCServer) ValidateToken(ctx context.Context, req *pb.ValidateTokenRequest) (*emptypb.Empty, error) {
+func (s *GRPCServer) ValidateToken(ctx context.Context, req *auth.ValidateTokenRequest) (*emptypb.Empty, error) {
 	startTime := time.Now()
 
 	err := s.uc.ValidateToken(ctx, req.AccessToken)
@@ -246,7 +246,7 @@ func (s *GRPCServer) ValidateToken(ctx context.Context, req *pb.ValidateTokenReq
 	return &emptypb.Empty{}, nil
 }
 
-func (s *GRPCServer) RefreshToken(ctx context.Context, req *pb.RefreshTokenRequest) (*pb.RefreshTokenResponse, error) {
+func (s *GRPCServer) RefreshToken(ctx context.Context, req *auth.RefreshTokenRequest) (*auth.RefreshTokenResponse, error) {
 	startTime := time.Now()
 
 	accessToken, refreshToken, err := s.uc.RefreshToken(ctx, req.RefreshToken)
@@ -261,7 +261,7 @@ func (s *GRPCServer) RefreshToken(ctx context.Context, req *pb.RefreshTokenReque
 			req, timeTaken.Milliseconds(), accessToken, refreshToken, err))
 	}()
 
-	return &pb.RefreshTokenResponse{
+	return &auth.RefreshTokenResponse{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, nil

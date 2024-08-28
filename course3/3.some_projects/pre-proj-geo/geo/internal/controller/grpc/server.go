@@ -3,23 +3,23 @@ package grpc
 import (
 	"context"
 	"fmt"
+	"geo-service/api/geo/grpc/gen/geo-service/geo"
 	"net"
 	"time"
 
 	"google.golang.org/grpc"
 
-	pb "geo-service/internal/controller/grpc/gen/geo-service/geo"
 	"geo-service/internal/entity"
 	"geo-service/internal/usecase"
 	"geo-service/pkg/logger"
 )
 
 const (
-	_defaultShutdownTimeout = 3 * time.Second
+	defaultShutdownTimeout = 3 * time.Second
 )
 
 type GRPCServer struct {
-	pb.UnimplementedGeoServiceServer
+	geo.UnimplementedGeoServiceServer
 	server          *grpc.Server
 	listener        net.Listener
 	notify          chan error
@@ -33,11 +33,11 @@ func NewGRPCServer(uc usecase.Addresser, lg logger.Interface, opts ...Option) *G
 		server:          grpc.NewServer(),
 		listener:        nil,
 		notify:          make(chan error, 1),
-		shutdownTimeout: _defaultShutdownTimeout,
+		shutdownTimeout: defaultShutdownTimeout,
 		uc:              uc,
 		lg:              lg,
 	}
-	pb.RegisterGeoServiceServer(grpcServer.server, grpcServer)
+	geo.RegisterGeoServiceServer(grpcServer.server, grpcServer)
 
 	// Custom options
 	for _, opt := range opts {
@@ -66,7 +66,7 @@ func (s *GRPCServer) Shutdown() {
 	s.server.GracefulStop()
 }
 
-func (s *GRPCServer) GeocodeToAddress(ctx context.Context, in *pb.Geocode) (*pb.Address, error) {
+func (s *GRPCServer) GeocodeToAddress(ctx context.Context, in *geo.Geocode) (*geo.Address, error) {
 	startTime := time.Now()
 
 	address, err := s.uc.GeocodeToAddress(
@@ -87,7 +87,7 @@ func (s *GRPCServer) GeocodeToAddress(ctx context.Context, in *pb.Geocode) (*pb.
 			in.Lat, in.Lng, timeTaken.Milliseconds(), address.Country, address.City))
 	}()
 
-	return &pb.Address{
+	return &geo.Address{
 		Country: address.Country,
 		City:    address.City,
 	}, nil

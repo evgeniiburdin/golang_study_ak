@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	_defaultShutdownTimeout = 3 * time.Second
+	defaultShutdownTimeout = 3 * time.Second
 )
 
 type RPCServer struct {
@@ -29,7 +29,7 @@ func NewRPCServer(uc usecase.Addresser, lg logger.Interface, opts ...Option) (*R
 	rpcServer := &RPCServer{
 		listener:        nil,
 		notify:          make(chan error, 1),
-		shutdownTimeout: _defaultShutdownTimeout,
+		shutdownTimeout: defaultShutdownTimeout,
 		uc:              uc,
 		lg:              lg,
 	}

@@ -1,0 +1,2 @@
+POST http://localhost:8080/api/address/geocode?lat=47.6062&lng=-122.3321
+Content-Type: application/json

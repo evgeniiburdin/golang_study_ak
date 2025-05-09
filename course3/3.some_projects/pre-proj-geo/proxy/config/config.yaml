@@ -1,0 +1,11 @@
+app:
+  name: 'geo-service-proxy'
+  version: '1.0.0'
+  transport: 'http'
+
+http:
+  port: '8080'
+  swaggerURL: 'http://localhost:80/swagger/doc.json' # comment line to disable swagger docs
+
+logger:
+  level: 'debug'

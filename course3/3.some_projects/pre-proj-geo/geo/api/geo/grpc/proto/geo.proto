@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package="geo-service/geo";
+
+package geo;
+
+service GeoService {
+  rpc GeocodeToAddress (Geocode) returns (Address);
+}
+
+message Geocode {
+  string lat = 1;
+  string lng = 2;
+}
+
+message Address {
+  string country = 1;
+  string city = 2;
+}

@@ -1,0 +1,409 @@
+definitions:
+  entity.User:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+      username:
+        type: string
+    type: object
+  v1.CreateUserRequest:
+    properties:
+      user:
+        $ref: '#/definitions/entity.User'
+    type: object
+  v1.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  v1.GeocodeToAddressResponse:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+    type: object
+  v1.GetUserResponse:
+    properties:
+      user:
+        $ref: '#/definitions/entity.User'
+    type: object
+  v1.GetUsersResponse:
+    properties:
+      users:
+        items:
+          $ref: '#/definitions/entity.User'
+        type: array
+    type: object
+  v1.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  v1.LoginResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+  v1.RefreshTokenResponse:
+    properties:
+      new_access_token:
+        type: string
+      new_refresh_token:
+        type: string
+    type: object
+  v1.UpdateUserRequest:
+    properties:
+      user:
+        $ref: '#/definitions/entity.User'
+    type: object
+info:
+  contact: {}
+paths:
+  /api/address/geocode:
+    post:
+      consumes:
+      - application/json
+      description: Converts latitude and longitude to a human-readable address
+      operationId: GeocodeToAddress
+      parameters:
+      - description: Latitude
+        in: query
+        name: lat
+        required: true
+        type: string
+      - description: Longitude
+        in: query
+        name: lng
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.GeocodeToAddressResponse'
+        "400":
+          description: invalid request parameters
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: invalid token
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: internal server error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Convert geocode to address
+      tags:
+      - address
+  /api/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates a user and returns access and refresh tokens
+      operationId: Login
+      parameters:
+      - description: User credentials
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/v1.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.LoginResponse'
+        "400":
+          description: invalid request body
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: invalid credentials
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: internal server error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Login user
+      tags:
+      - auth
+  /api/auth/logout:
+    get:
+      consumes:
+      - application/json
+      description: Logs out the currently authenticated user
+      operationId: Logout
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: access token required
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: invalid token
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: internal server error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Logout user
+      tags:
+      - auth
+  /api/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new user in the system
+      operationId: CreateUser
+      parameters:
+      - description: User data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/v1.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: invalid request body
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: internal server error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Register a new user
+      tags:
+      - auth
+  /api/auth/token/refresh:
+    get:
+      consumes:
+      - application/json
+      description: Refreshes the access and refresh tokens using the provided refresh
+        token
+      operationId: RefreshToken
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.RefreshTokenResponse'
+        "400":
+          description: invalid request body
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: internal server error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Refresh token
+      tags:
+      - auth
+  /api/auth/token/validate:
+    get:
+      consumes:
+      - application/json
+      description: Validates the provided access token
+      operationId: ValidateToken
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: valid
+          schema:
+            type: string
+        "400":
+          description: token is required
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: invalid token
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: internal server error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Validate token
+      tags:
+      - auth
+  /api/auth/user:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves information about the currently authenticated user
+      operationId: GetUser
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.GetUserResponse'
+        "401":
+          description: invalid token
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: internal server error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Get user information
+      tags:
+      - auth
+  /api/auth/user/delete:
+    get:
+      consumes:
+      - application/json
+      description: Deletes the currently authenticated user
+      operationId: DeleteUser
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: access token required
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: invalid token
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: internal server error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Delete user
+      tags:
+      - auth
+  /api/auth/user/update:
+    post:
+      consumes:
+      - application/json
+      description: Updates information for the currently authenticated user
+      operationId: UpdateUser
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Updated user data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/v1.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: invalid request body
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: invalid token
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: internal server error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Update user information
+      tags:
+      - auth
+  /api/auth/users:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all registered users
+      operationId: GetUsers
+      parameters:
+      - description: token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.GetUsersResponse'
+        "401":
+          description: invalid token
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "500":
+          description: internal server error
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Get all users
+      tags:
+      - auth
+swagger: "2.0"

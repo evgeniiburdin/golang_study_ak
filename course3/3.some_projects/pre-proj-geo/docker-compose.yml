@@ -1,0 +1,142 @@
+version: '3.8'
+
+services:
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    depends_on:
+      - proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - backend-network
+
+  proxy:
+    build: ./proxy
+    container_name: proxy
+    ports:
+      - '8080:8080'
+    depends_on:
+      - auth
+      - geo
+    restart: unless-stopped
+    networks:
+      - backend-network
+    environment:
+      AUTH_SERVICE_ADDRESS: auth:8080
+      GEO_SERVICE_ADDRESS: geo:8080
+
+  auth:
+    build: ./auth
+    container_name: auth
+    depends_on:
+      - user
+#      - kafka
+    restart: unless-stopped
+    networks:
+      - backend-network
+    environment:
+      PG_URL: 'postgres://postgres:postgres@postgres:5432/auth_db'
+      JWT_SIGNING_KEY: myverysecretsecret
+      USER_SERVICE_URL: 'user:8080'
+      KAFKA_ADDRESS: 'kafka:9092'
+
+  user:
+    build: ./user
+    container_name: user
+    depends_on:
+      - redis
+#      - kafka
+    restart: unless-stopped
+    networks:
+      - backend-network
+    environment:
+      PG_URL: 'postgres://postgres:postgres@postgres:5432/user_db'
+      REDIS_ADDR: 'redis:6379'
+      KAFKA_ADDRESS: 'kafka:9092'
+
+  geo:
+    build: ./geo
+    container_name: geo
+    depends_on:
+      - prometheus
+      - grafana
+    restart: unless-stopped
+    networks:
+      - backend-network
+    environment:
+      openCageAPIKey: '2b9e3875efe54f5a8a2fb9f7e6b87ee6'
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    networks:
+      - backend-network
+
+  grafana:
+    image: grafana/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    networks:
+      - backend-network
+    ports:
+      - '3000:3000'
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: unless-stopped
+    networks:
+      - backend-network
+
+#  zookeeper:
+#    image: confluentinc/cp-zookeeper:7.4.0
+#    ports:
+#      - "2181:2181"
+#    environment:
+#      ZOOKEEPER_CLIENT_PORT: 2181
+#      ZOOKEEPER_TICK_TIME: 2000
+#    healthcheck:
+#      test: [ "CMD", "echo", "ruok" ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+#    networks:
+#      - backend-network
+
+#  kafka:
+#    container_name: kafka
+#    ports:
+#      - "9092:9092"
+#    image: confluentinc/cp-kafka:7.4.0
+#    depends_on:
+#      zookeeper:
+#        condition: service_healthy
+#    healthcheck:
+#      test: [ "CMD", "bash", "-c", "echo 'list' | kafka-topics --bootstrap-server localhost:9092 --command-config /etc/kafka/secrets/client.properties" ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+#    environment:
+#      KAFKA_BROKER_ID: 1
+#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#    networks:
+#      - backend-network
+
+networks:
+  frontend-network:
+  backend-network:
+    external: true
+
+volumes:
+  grafana-storage:
+  prometheus-data:

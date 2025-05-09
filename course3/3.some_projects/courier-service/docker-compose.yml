@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  courier-service:
+    build: .
+    container_name: "courier-service"
+    depends_on:
+      - redis
+    stdin_open: true
+    tty: true
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+  redis:
+    image: "redis:latest"
+    container_name: "redis"
+    ports:
+      - "6379:6379"
